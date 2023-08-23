@@ -10,67 +10,77 @@
         <div class="row">
             <div class="col-lg-12 mb-md">
                 <div class="card-header d-flex jusitify-space-between">
-                    <h2 class="p-1 m-0 text-16 font-weight-semi">Banks </h2>
+                    <h2 class="p-1 m-0 text-16 font-weight-semi">Confirmation Requests</h2>
                     <div class="flex-grow-1"></div>
                     <div>
                         <a type="button" class="btn btn-opacity btn-primary btn-sm my-sm mr-sm"
-                            href="{{route('banks.create')}}" title="Create bank">Create bank</a>
+                            href="{{route('confirmation-requests.create')}}" title="Create Request">Create Request</a>
                     </div>
                 </div>
                 <div class="card">
                     <div class="card-body">
                         <div class="mt-l mb-lg"></div>
                         {{-- <div class="d-flex justify-content-center"> --}}
-                        @if ($banks->count() > 0)
+                        @if ($confirmation_requests->count() > 0)
                             <table class="table nowrap" id="datatableScrollXY" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>Name</th>
-                                        <th>Join Date</th>
-                                        <th>Bank Code</th>
-                                        <th>Status</th>
+                                        <th>Opening Date</th>
+                                        <th>Closing Date</th>
+                                        <th>Initiator</th>
+                                        <th>Authorization Status</th>
+                                        <th>Confirmation Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($banks as $bank)
+                                    @foreach ($confirmation_requests as $request)
                                         <tr>
-                                            <td>{{ $bank->name }}</td>
-                                            <td>{{ $bank->created_at->format('m-d-Y') }}</td>
-                                            <td>{{ $bank->bank_code }}</td>
+                                            <td>{{ $request->name }}</td>
+                                            <td>{{ $request->opening_date }}</td>
+                                            <td>{{ $request->closing->date }}</td>
+                                            <td>{{ $request->auditor->name() }}</td>
                                             <td>
-                                                @if ($bank->is_verified == 0)
-                                                    <span class="badge badge-warning">Unverified</span>
-                                                @elseif ($bank->is_verified == 1)
-                                                    <span class="badge badge-success">Verified</span>
+                                                @if ($request->authorization_status == 0)
+                                                    <span class="badge badge-warning">Pending</span>
+                                                @elseif ($request->authorization_status == 1)
+                                                    <span class="badge badge-success">Authorized</span>
                                                 @endif
                                             </td>
                                             <td>
-                                                <a href="{{ url('/banks/'.encrypt($bank->id).'/edit') }}"
-                                                    title="Edit bank"><span class="material-icons">edit_note</span></a>
+                                                @if ($request->confirmation_status == 0)
+                                                    <span class="badge badge-warning">Pending</span>
+                                                @elseif ($request->confirmation_status == 1)
+                                                    <span class="badge badge-success">Completed</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <a href="{{ url('/comfirmation-requests/'.encrypt($request->id).'/edit') }}"
+                                                    title="Edit request"><span class="material-icons">edit_note</span></a>
                                                 &nbsp;
-                                                @if ($bank->is_verified)
-                                                    <a class="unverify-item text-warning" data-id="{{ encrypt($bank->id) }}"
+                                                @if ($request->is_verified)
+                                                    <a class="unverify-item text-warning" data-id="{{ encrypt($request->id) }}"
                                                         data-message="Yes, unverify it!" href="#"
-                                                        title="Unverify bank"><span
+                                                        title="Unverify request"><span
                                                             class="material-icons">unpublished</span></a>
                                                 @else
-                                                    <a class="verify-item text-success" data-id="{{ encrypt($bank->id) }}"
+                                                    <a class="verify-item text-success" data-id="{{ encrypt($request->id) }}"
                                                         data-message="Yes, verify it!" href="#"
-                                                        title="Verify bank"><span
+                                                        title="Verify request"><span
                                                             class="material-icons">task_alt</span></a>
                                                 @endif
                                                 &nbsp;
                                                 <a class="delete-item text-danger"
-                                                    data-id="{{ encrypt($bank->id) }}" href="#"
-                                                    title="Delete bank"><span class="material-icons">delete</span></a>
+                                                    data-id="{{ encrypt($request->id) }}" href="#"
+                                                    title="Delete request"><span class="material-icons">delete</span></a>
                                             </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
                         @else
-                            <div class="text-danger"> There is no bank.</div>
+                            <div class="text-danger"> There is no request.</div>
                         @endif
                         {{-- </div> --}}
                     </div>
@@ -92,7 +102,7 @@
                 e.preventDefault();
                 var itemId = $(this).attr('data-id');
                 var message = $(this).attr('data-message');
-                var url = '/banks/' + itemId + '/verification'
+                var url = '/comfirmation-requests/' + itemId + '/verification'
                 confirmAction(url, '.verify-item', message);
             });
 
@@ -100,14 +110,14 @@
                 e.preventDefault();
                 var itemId = $(this).attr('data-id');
                 var message = $(this).attr('data-message');
-                var url = '/banks/' + itemId + '/verification'
+                var url = '/comfirmation-requests/' + itemId + '/verification'
                 confirmAction(url, '.unverify-item', message);
             });
 
             $('table').on('click', '.delete-item', function(e) {
                 e.preventDefault();
                 var itemId = $(this).attr('data-id');
-                var url = '/banks/' + itemId + '/delete'
+                var url = '/comfirmation-requests/' + itemId + '/delete'
                 confirmAction(url, '.delete-item');
             });
         })

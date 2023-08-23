@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ConfirmationRequest as RequestsConfirmationRequest;
+use App\Models\Bank;
 use App\Models\ConfirmationRequest;
 use Illuminate\Http\Request;
 
@@ -30,7 +32,8 @@ class ConfirmationRequestController extends Controller
      */
     public function create()
     {
-        //
+        $banks = Bank::select('id', 'name')->get();
+        return view('confirmation_requests.create', compact('banks'));
     }
 
     /**
@@ -39,9 +42,19 @@ class ConfirmationRequestController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RequestsConfirmationRequest $request)
     {
-        //
+        [
+            'name',
+            'opening_period',
+            'closing_period',
+            'auditor_id',
+            'company_id',
+            'bank_id',
+            'signatory_name',
+            'signatory_phone',
+            'signatory_email'
+        ];
     }
 
     /**

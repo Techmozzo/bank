@@ -38,7 +38,7 @@ Route::group(['middleware' => ['auth', 'block']], function () {
 });
 
 Route::group(['middleware' => ['auth', 'block', 'company.verify']], function () {
-    Route::resource('comfirmation-requests', ConfirmationRequestController::class);
+    Route::resource('confirmation-requests', ConfirmationRequestController::class);
 
     Route::post('/validation/upload', [ValidationController::class, 'upload'])->name('validation.upload');
     Route::get('/validation', [ValidationController::class, 'index'])->name('validation.index');

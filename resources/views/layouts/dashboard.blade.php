@@ -44,19 +44,19 @@
             <div class="scroll-nav" data-perfect-scrollbar="" data-suppress-scroll-x="true">
                 <div class="app-user text-center">
                     <div class="app-user-photo">
-                        @if ($auditor->profile->dp)
-                            <img src="{{ $auditor->profile->dp }}" alt="" />
+                        @if (auth()->user()->profile->dp)
+                            <img src="{{ auth()->user()->profile->dp }}" alt="" />
                         @else
-                            @if ($auditor->profile->gender == 'felmale')
+                            @if (auth()->user()->profile->gender == 'felmale')
                                 <img src="/dashboard/src/images/avatars/006-woman-1.svg" alt="" />
-                            @elseif($auditor->profile->gender == 'male')
+                            @elseif(auth()->user()->profile->gender == 'male')
                                 <img src="/dashboard/src/images/avatars/001-man.svg" alt="" />
                             @else
                                 <img src="/dashboard/src/images/avatars/005-man-2.svg" alt="" />
                             @endif
                         @endif
                     </div>
-                    <div class="app-user-info"><span class="app-user-name">{{ $auditor->name() }}</span>
+                    <div class="app-user-info"><span class="app-user-name">{{ auth()->user()->name() }}</span>
                         <div class="app-user-control">
                             <a class="control-item" href="#"><i class="material-icons">
                                     settings</i></a>
@@ -90,7 +90,7 @@
                                 @endcan
 
                                 @can('admin')
-                                    <li><a href="{{ route('comfirmation-requests.index') }}"><i
+                                    <li><a href="{{ route('confirmation-requests.index') }}"><i
                                                 class="material-icons nav-icon text-16">add_card</i>Confirmation
                                             Requests</a>
                                     </li>
@@ -149,22 +149,22 @@
                         <div class="header-btn-group">
                             <button class="btn d-flex py-1 pl-2 pr-0 rounded" id="dropdownTopUserProfile"
                                 type="button" data-toggle="dropdown"><span class="m-0 mr-2 font-weight-normal">Hi,
-                                    {{ $auditor->name() }}</span>
+                                    {{ auth()->user()->name() }}</span>
                                 <span class="fa fa-user"></span>
                             </button>
                             <div aria-labelledby="dropdownTopUserProfile">
                                 <div class="card dropdown-menu p-0 ul-avatar-dropdown">
                                     <div class="card-header bg-primary">
                                         <div class="ul-avatar-dropdown-container">
-                                            @if ($auditor->profile->dp)
+                                            @if (auth()->user()->profile->dp)
                                                 <img class="avatar-md rounded-circle mr-2"
-                                                    src="{{ $auditor->profile->dp }}" alt="" />
+                                                    src="{{ auth()->user()->profile->dp }}" alt="" />
                                             @else
-                                                @if ($auditor->profile->gender == 'felmale')
+                                                @if (auth()->user()->profile->gender == 'felmale')
                                                     <img class="avatar-md rounded-circle mr-2"
                                                         src="/dashboard/src/images/avatars/006-woman-1.svg"
                                                         alt="" />
-                                                @elseif($auditor->profile->gender == 'male')
+                                                @elseif(auth()->user()->profile->gender == 'male')
                                                     <img class="avatar-md rounded-circle mr-2"
                                                         src="/dashboard/src/images/avatars/001-man.svg"
                                                         alt="" />
@@ -176,7 +176,7 @@
                                             @endif
                                             <div class="content">
                                                 <p class="text-white font-weight-semi m-0">
-                                                    {{ $auditor->name() }}
+                                                    {{ auth()->user()->name() }}
                                                 </p>
                                                 <p class="text-small text-muted my-xs">TSB, User</p>
                                             </div>
@@ -225,18 +225,18 @@
                                         href="{{ route('faqs.create') }}">Add new FAQ </a>
                                 @else
                                     <div class="subheader-toolbar">
-                                        @switch($auditor)
-                                            @case($auditor->is_verified == 1)
+                                        @switch(auth()->user())
+                                            @case(auth()->user()->is_verified == 1)
                                                 <a class="btn btn-opacity-success btn-sm mr-2">Verified <i
                                                         class="fa fa-check-circle"></i></a>
                                             @break
 
-                                            @case($auditor->is_verified == 0)
+                                            @case(auth()->user()->is_verified == 0)
                                                 <a class="btn btn-opacity-warning btn-sm mr-2">Pending Verification <i
                                                         class="fa fa-spinner fa-pulse fa-1x fa-fw"></i></a>
                                             @break
 
-                                            @case($auditor->is_verified == 2)
+                                            @case(auth()->user()->is_verified == 2)
                                                 <a class="btn btn-opacity-danger btn-sm mr-2"
                                                     href="{{ route('validation.index') }}">
                                                     Failed Verification <i class="fa fa-warning"></i></a>
