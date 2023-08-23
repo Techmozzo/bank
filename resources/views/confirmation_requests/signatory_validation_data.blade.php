@@ -1,6 +1,6 @@
 @foreach (array_slice(old('signatory_email', []), 1) as $key => $value)
     <div class="mt-xxl mb-lg d-flex jusitify-space-between"></div>
-    <h2 class="p-1 m-0 text-16 font-weight-semi text-center">New Signatory</h2>
+    <h2 class="p-1 m-0 text-16 font-weight-semi text-center">Additional Signatory</h2>
     <div class="form-group">
         <label class="control-label" for="signatory_name[]">Name</label>
         <input type="text" class="form-control" id="signatory_name[]" name="signatory_name[]"

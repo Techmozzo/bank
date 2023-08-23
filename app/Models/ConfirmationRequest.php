@@ -20,4 +20,12 @@ class ConfirmationRequest extends Model
     public function auditor(){
         return $this->belongsTo(Auditor::class, 'auditor_id');
     }
+
+    public function signatory(){
+        return $this->hasMany(Signatory::class, 'confirmation_request_id');
+    }
+
+    public function account(){
+        return $this->hasMany(Account::class, 'confirmation_request_id');
+    }
 }

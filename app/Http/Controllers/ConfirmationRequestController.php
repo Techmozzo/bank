@@ -3,9 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ConfirmationRequest as RequestsConfirmationRequest;
+use App\Jobs\ConfirmationRequestJob;
 use App\Models\Bank;
 use App\Models\ConfirmationRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class ConfirmationRequestController extends Controller
 {
@@ -44,17 +49,40 @@ class ConfirmationRequestController extends Controller
      */
     public function store(RequestsConfirmationRequest $request)
     {
-        [
-            'name',
-            'opening_period',
-            'closing_period',
-            'auditor_id',
-            'company_id',
-            'bank_id',
-            'signatory_name',
-            'signatory_phone',
-            'signatory_email'
-        ];
+        $auditor = Auth::user();
+        try{
+            DB::beginTransaction();
+                $confirmation_request = ConfirmationRequest::create([
+                    'name' => $request->name,
+                    'opening_period' => $request->opening_period,
+                    'closing_period' => $request->closing_period,
+                    'auditor_id' => $auditor->id,
+                    'company_id' => $auditor->company_id,
+                    'bank_id' => $request->bank,
+                ]);
+
+                foreach ($request->account_name as $key => $account){
+                    $confirmation_request->account()->create([
+                        'name' => $account,
+                        'number' => $request->account_number[$key],
+                    ]);
+                }
+
+                foreach ($request->signatory_name as $key => $signatory){
+                    $signatory = $confirmation_request->signatory()->create([
+                        'name' => $signatory,
+                        'email' => $request->signatory_email[$key],
+                        'phone' => $request->signatory_phone[$key],
+                    ]);
+                    ConfirmationRequestJob::dispatch($auditor, $signatory);
+                }
+            DB::commit();
+        }catch(Throwable $t){
+            DB::rollback();
+            Log::error(['Confirmtion Request' => $t->getMessage()]);
+            return redirect()->back()->with(['error' => 'Unable to create request at the moment']);
+        }
+        return redirect()->route('home')->with(['success' => 'Confirmation Request Sent Successfully.']);
     }
 
     /**
@@ -101,4 +129,5 @@ class ConfirmationRequestController extends Controller
     {
         //
     }
+
 }

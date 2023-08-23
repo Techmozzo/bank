@@ -37,13 +37,13 @@ class EmailJob implements ShouldQueue
     public function handle()
     {
         $name = ($this->to) ? 'Admin' : $this->user->name();
-        $recipientEmail = ($this->to) ? $this->user->email : 'support@Ea-Auditor.com';
+        $recipientEmail = ($this->to) ? $this->user->email : 'support@ea-audit.com';
         $subject = 'Ea-Auditor';
         $heading = $this->data['subject'];
         $body = $this->data['message'];
         $attachment = $this->data['attachment'] ?? null;
         if (!empty($this->data['copy'])) {
-            $cc = ($this->to) ? 'support@Ea-Auditor.com' : $this->user->email;
+            $cc = ($this->to) ? 'support@ea-audit.com' : $this->user->email;
             Mail::to($recipientEmail)->cc([$cc])->send(new SendMail($name, $subject, $heading, $body, $attachment));
         } else {
             Mail::to($recipientEmail)->send(new SendMail($name, $subject, $heading, $body, $attachment));

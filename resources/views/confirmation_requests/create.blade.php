@@ -47,26 +47,33 @@
                         @enderror
                     </div>
 
-                    <div class="form-group">
-                        <label class="control-label" for="account_name">Account Name</label>
-                        <input type="text" class="form-control @error('account_name') is-invalid @enderror"
-                            id="account_name" name="account_name" value="{{ old('account_name') }}" required />
-                        @error('account_name')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
+                    <div class="account">
+                        @if ($errors->get('account_number') )
+                            <div class="alert alert-danger" style="padding: 5px;">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                <p style="margin-bottom:0; padding-left:10px;">{{ $errors->get('account_number')[0] }}</p>
+                            </div>
+                        @endif
+
+                        <div class="form-group">
+                            <label class="control-label" for="account_name">Account Name</label>
+                            <input type="text" class="form-control"
+                                id="account_name" name="account_name[]" value="{{ old('account_name.0') }}" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" for="account_number">Account Number</label>
+                            <input type="text" class="form-control"
+                                id="account_number" name="account_number[]" value="{{ old('account_number.0') }}" required />
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label class="control-label" for="account_number">Account Number</label>
-                        <input type="text" class="form-control @error('account_number') is-invalid @enderror"
-                            id="account_number" name="account_number" value="{{ old('account_number') }}" required />
-                        @error('account_number')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
+                    <div class="mt-xxl mb-lg d-flex jusitify-space-between">
+                        <div class="flex-grow-1"></div>
+                        <div>
+                            <button class="btn btn-opacity btn-primary btn-sm my-sm mr-sm add-account"
+                                title="Add Account">Add Account</button>
+                        </div>
                     </div>
 
                     <div class="row">
@@ -96,7 +103,7 @@
                     <div class="mt-xxl mb-lg"></div>
 
                     <h2 class="p-1 m-0 text-16 font-weight-semi text-center">Signatory Information</h2>
-                    @if($errors->get('signatory_email'))
+                    @if ($errors->get('signatory_email'))
                         <div class="alert alert-danger" style="padding: 5px;">
                             <button type="button" class="close" data-dismiss="alert">×</button>
                             <p style="margin-bottom:0; padding-left:10px;">{{ $errors->get('signatory_email')[0] }}</p>
@@ -105,28 +112,24 @@
                     <div class="signatory">
                         <div class="form-group">
                             <label class="control-label" for="signatory_name[]">Name</label>
-                            <input type="text" class="form-control"
-                                id="signatory_name[]" name="signatory_name[]" value="{{ old('signatory_name.0') }}"
-                                required />
+                            <input type="text" class="form-control" id="signatory_name[]" name="signatory_name[]"
+                                value="{{ old('signatory_name.0') }}" required />
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label" for="signatory_email[]">Email</label>
-                            <input type="email" class="form-control "
-                                id="signatory_email[]" name="signatory_email[]" value="{{ old('signatory_email.0') }}"
-                                required />
-
+                            <label class="control-label" for="signatory_email">Email</label>
+                            <input type="email" class="form-control " id="signatory_email" name="signatory_email[]"
+                                value="{{ old('signatory_email.0') }}" required />
                         </div>
 
                         <div class="form-group">
                             <label class="control-label" for="signatory_phone[]">Phone</label>
-                            <input type="text" class="form-control "
-                                id="signatory_phone[]" name="signatory_phone[]" value="{{ old('signatory_phone.0') }}"
-                                required />
+                            <input type="text" class="form-control " id="signatory_phone[]" name="signatory_phone[]"
+                                value="{{ old('signatory_phone.0') }}" required />
                         </div>
 
-                        @include('confirmation_requests.validation_data')
-                        
+                        @include('confirmation_requests.signatory_validation_data')
+
                     </div>
 
                     <div class="mt-xxl mb-lg d-flex jusitify-space-between">
@@ -161,40 +164,25 @@
             $('.add-signatory').on("click", function() {
                 var newSignatoryFields = $("<div></div>").html(`
                     <div class="mt-xxl mb-lg d-flex jusitify-space-between"></div>
-                    <h2 class="p-1 m-0 text-16 font-weight-semi text-center">New Signatory</h2>
+                    <h2 class="p-1 m-0 text-16 font-weight-semi text-center">Additional Signatory</h2>
                     <div class="form-group">
-                        <label class="control-label" for="signatory_name[]">Name</label>
-                        <input type="text" class="form-control @error('signatory_name[]') is-invalid @enderror"
-                            id="signatory_name[]" name="signatory_name[]" value="{{ old('address') }}" required />
-                        @error('signatory_name[]')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
+                        <label class="control-label" for="signatory_name">Name</label>
+                        <input type="text" class="form-control"
+                            id="signatory_name" name="signatory_name[]" value="{{ old('signatory_name') }}" required />
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label" for="signatory_email[]">Email</label>
-                        <input type="email" class="form-control @error('signatory_email[]') is-invalid @enderror"
-                            id="signatory_email[]" name="signatory_email[]" value="{{ old('signatory_email[]') }}"
+                        <label class="control-label" for="signatory_email">Email</label>
+                        <input type="email" class="form-control"
+                            id="signatory_email" name="signatory_email[]" value="{{ old('signatory_email') }}"
                             required />
-                        @error('signatory_email[]')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
                     </div>
 
                     <div class="form-group">
                         <label class="control-label" for="signatory_phone[]">Phone</label>
-                        <input type="text" class="form-control @error('state') is-invalid @enderror"
-                            id="signatory_phone[]" name="signatory_phone[]" value="{{ old('signatory_phone[]') }}"
+                        <input type="text" class="form-control"
+                            id="signatory_phone[]" name="signatory_phone[]" value="{{ old('signatory_phone') }}"
                             required />
-                        @error('signatory_phone[]')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
                     </div>
 
                     <button type="button" class="btn btn-opacity btn-danger btn-sm my-sm mr-sm remove-signatory">Remove</button>
@@ -204,6 +192,32 @@
             });
 
             $("body").on("click", "button.remove-signatory", function() {
+                $(this).parent().remove();
+            });
+
+
+            $('.add-account').on("click", function() {
+                var newAccountFields = $("<div></div>").html(`
+                    <div class="mt-xxl mb-lg d-flex jusitify-space-between"></div>
+                    <h2 class="p-1 m-0 text-16 font-weight-semi text-center">Additional Account</h2>
+                    <div class="form-group">
+                            <label class="control-label" for="account_name">Account Name</label>
+                            <input type="text" class="form-control"
+                                id="account_name" name="account_name[]" value="{{ old('account_name.0') }}" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" for="account_number">Account Number</label>
+                            <input type="text" class="form-control"
+                                id="account_number" name="account_number[]" value="{{ old('account_number.0') }}" required />
+                        </div>
+                    <button type="button" class="btn btn-opacity btn-danger btn-sm my-sm mr-sm remove-account">Remove</button>
+            `);
+                $('.account').append(newAccountFields);
+                newAccountFields.find("input").focus();
+            });
+
+            $("body").on("click", "button.remove-account", function() {
                 $(this).parent().remove();
             });
         });
