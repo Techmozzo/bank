@@ -26,11 +26,10 @@
                                 <thead>
                                     <tr>
                                         <th>Name</th>
-                                        <th>Opening Date</th>
-                                        <th>Closing Date</th>
+                                        <th>Period</th>
                                         <th>Initiator</th>
-                                        <th>Authorization Status</th>
-                                        <th>Confirmation Status</th>
+                                        <th>Authorization</th>
+                                        <th>Confirmation</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -38,8 +37,7 @@
                                     @foreach ($confirmation_requests as $request)
                                         <tr>
                                             <td>{{ $request->name }}</td>
-                                            <td>{{ $request->opening_date }}</td>
-                                            <td>{{ $request->closing->date }}</td>
+                                            <td>{{ getPeriodDayAndMonth($request->opening_period) .' '. getYearsRangeInStringFormat(getYearsInRange($request->opening_period, $request->closing_period))}}</td>
                                             <td>{{ $request->auditor->name() }}</td>
                                             <td>
                                                 @if ($request->authorization_status == 0)
