@@ -64,3 +64,8 @@ Route::group(['middleware' => ['auth', 'admin', 'block']], function () {
     Route::resource('auditors', AuditorController::class);
 });
 // });
+
+
+Route::get('/test', function(){
+    return view('signature.index');
+});

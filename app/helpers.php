@@ -51,3 +51,27 @@ function storeFileLocally(string $folderName, Object $file): String
     $file->move(public_path('store/' . $folderName), $name);
     return 'store/' . $folderName . '/' . $name;
 }
+
+function getYearsInRange($start_date, $end_date) {
+    $start_year = date('Y', strtotime($start_date));
+    $end_year = date('Y', strtotime($end_date));
+
+    $years = [];
+
+    for ($year = $start_year; $year <= $end_year; $year++) {
+        $years[] = $year;
+    }
+
+    return $years;
+}
+
+function getYearRangeInStringFormat(array $year_range){
+    $size = count($year_range);
+    $years = '';
+    for($i=0; $i < $size; $i++){
+        if($i == $size - 1){
+            return $years += 'and '.$year_range[$i];
+        }
+        $years += $year_range[$i].', ';
+    }
+}
