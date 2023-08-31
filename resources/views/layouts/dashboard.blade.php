@@ -220,35 +220,33 @@
                                 </nav>
                             </div>
                             <div class="flex-grow-1"></div>
-                            @if (request()->routeIs('admin.faqs.index'))
-                                <div class="subheader-toolbar"><a class="btn btn-opacity-primary btn-sm mr-2"
-                                        href="{{ route('faqs.create') }}">Add new FAQ </a>
-                                @else
-                                    <div class="subheader-toolbar">
-                                        @switch(auth()->user())
-                                            @case(auth()->user()->is_verified == 1)
-                                                <a class="btn btn-opacity-success btn-sm mr-2">Verified <i
-                                                        class="fa fa-check-circle"></i></a>
-                                            @break
+                            <div class="subheader-toolbar">
+                                @switch(auth()->user())
+                                    @case(auth()->user()->is_verified == 1)
+                                        <a class="btn btn-opacity-success btn-sm mr-2">Verified <i
+                                                class="fa fa-check-circle"></i></a>
+                                    @break
 
-                                            @case(auth()->user()->is_verified == 0)
-                                                <a class="btn btn-opacity-warning btn-sm mr-2">Pending Verification <i
-                                                        class="fa fa-spinner fa-pulse fa-1x fa-fw"></i></a>
-                                            @break
+                                    @case(auth()->user()->is_verified == 0)
+                                        <a class="btn btn-opacity-warning btn-sm mr-2">Pending Verification <i
+                                                class="fa fa-spinner fa-pulse fa-1x fa-fw"></i></a>
+                                    @break
 
-                                            @case(auth()->user()->is_verified == 2)
-                                                <a class="btn btn-opacity-danger btn-sm mr-2"
-                                                    href="{{ route('validation.index') }}">
-                                                    Failed Verification <i class="fa fa-warning"></i></a>
-                                            @break
+                                    @case(auth()->user()->is_verified == 2)
+                                        <a class="btn btn-opacity-danger btn-sm mr-2" href="{{ route('validation.index') }}">
+                                            Failed Verification <i class="fa fa-warning"></i></a>
+                                    @break
 
-                                            @default
-                                                <a class="btn btn-opacity-danger btn-sm mr-2"
-                                                    href="{{ route('validation.index') }}">
-                                                    Unverified <i class="fa fa-times-circle"></i></a>
-                                        @endswitch
-                                    </div>
-                            @endif
+                                    @default
+                                        <a class="btn btn-opacity-danger btn-sm mr-2" href="{{ route('validation.index') }}">
+                                            Unverified <i class="fa fa-times-circle"></i></a>
+                                @endswitch
+
+                                @can('admin')
+                                    <a class="btn btn-opacity-primary btn-sm mr-2"
+                                    href="{{ route('auditors.create') }}">Add Auditor </a>
+                                @endcan
+                            </div>
                         </div>
                     </div>
                 @endcan

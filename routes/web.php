@@ -37,6 +37,8 @@ Route::group(['middleware' => ['auth', 'block']], function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 });
 
+Route::get('/{id}/email-verification', [AuditorController::class, 'verification'])->name('email.verification');
+
 Route::group(['middleware' => ['auth', 'block', 'company.verify']], function () {
     Route::resource('confirmation-requests', ConfirmationRequestController::class);
 

@@ -3,13 +3,56 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AuditorRequest;
+use App\Interfaces\Types;
+use App\Jobs\AddAuditorJob;
 use App\Jobs\VerificationJob;
 use App\Models\Auditor;
+use App\Models\Profile;
+use App\Models\Role;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Throwable;
+use Illuminate\Support\Str;
 
 class AuditorController extends Controller
 {
+
+    public function create()
+    {
+        $roles = Role::select('name', 'id')->get();
+        return view('auditors.create', compact('roles'));
+    }
+
+    public function store(AuditorRequest $request)
+    {
+        $admin = auth()->user();
+        $password = Hash::make(Str::random(8));
+        try {
+            DB::transaction();
+            $auditor = Auditor::create([
+                'email' => $request->email,
+                'password' => $password,
+                'role_id' => $request->role,
+                'company_id' => $admin->company_id
+            ]);
+
+            Profile::create([
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'phone' => $request->phone,
+                'user_type' => Types::Users['auditor'],
+                'user_id' => $auditor->id
+            ]);
+            AddAuditorJob::dispatch($admin, $auditor, $password);
+            VerificationJob::dispatch($auditor);
+            DB::commit();
+        } catch (Throwable $t) {
+            DB::rollBack();
+            return redirect()->route('auditors.create')->withInput()->with(['error' => 'Unable to Add Auditor at the moment']);
+        }
+    }
+
     public function destroy($id)
     {
         $data = ['success' => 'Auditor deleted successfully'];
