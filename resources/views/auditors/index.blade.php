@@ -34,7 +34,7 @@
                                                 <a class="dropdown-item" href="#"><i
                                                         class="material-icons icon icon-sm">email</i>Send Email</a>
                                                 <a class="dropdown-item"
-                                                    href="{{ url('#' . encrypt($auditor->id) . '/create') }}"><i
+                                                    href="{{ url('#' . encrypt_helper($auditor->id) . '/create') }}"><i
                                                         class="material-icons icon icon-sm">add_box</i>Create
                                                     Transaction</a>
                                                 <a class="dropdown-item" href="#"><i
@@ -64,7 +64,8 @@
 
                                         <div class="mb-md">
                                             <div class="">
-                                                <strong>{{ $auditor->confirmation_request_count }} Request Confirmations</strong>
+                                                <strong>{{ $auditor->confirmation_request_count }} Request
+                                                    Confirmations</strong>
                                             </div>
                                         </div>
 
@@ -72,11 +73,13 @@
                                             <div class="d-flex flex-wrap justify-content-end">
                                                 @if ($auditor->is_verified == 1)
                                                     <a class="btn btn-opacity btn-danger btn-sm my-sm mr-sm unverify-item"
-                                                        href="#" data-id="{{ encrypt($auditor->id) }}" data-message="Yes, unverify auditor">Unverify
+                                                        href="#" data-id="{{ encrypt_helper($auditor->id) }}"
+                                                        data-message="Yes, unverify auditor">Unverify
                                                     </a>
                                                 @elseif($auditor->is_verified == 0)
                                                     <a class="btn btn-opacity btn-primary btn-sm my-sm mr-sm verify-item"
-                                                    href="#" data-id="{{ encrypt($auditor->id) }}" data-message="Yes, verify auditor">Verify
+                                                        href="#" data-id="{{ encrypt_helper($auditor->id) }}"
+                                                        data-message="Yes, verify auditor">Verify
                                                     </a>
                                                 @endif
                                             </div>
@@ -85,12 +88,14 @@
                                                 @if ($auditor->is_blocked)
                                                     <button type="button"
                                                         class="btn btn-opacity btn-success btn-sm my-sm mr-sm block-item"
-                                                        data-id="{{ encrypt($auditor->id) }}" data-message="Yes, unblock auditor">UNBLOCK
+                                                        data-id="{{ encrypt_helper($auditor->id) }}"
+                                                        data-message="Yes, unblock auditor">UNBLOCK
                                                     </button>
                                                 @elseif (!$auditor->is_blocked)
                                                     <button type="button"
                                                         class="btn btn-opacity btn-danger btn-sm my-sm mr-sm block-item"
-                                                        data-id="{{ encrypt($auditor->id) }}" data-message="Yes, block auditor">BLOCK
+                                                        data-id="{{ encrypt_helper($auditor->id) }}"
+                                                        data-message="Yes, block auditor">BLOCK
                                                     </button>
                                                 @endif
                                             </div>
@@ -103,7 +108,7 @@
                                             <div class="d-flex flex-wrap justify-content-end">
                                                 <button type="button"
                                                     class="btn btn-opacity btn-danger btn-sm my-sm mr-sm delete-item"
-                                                    data-id="{{ encrypt($auditor->id) }}">DELETE
+                                                    data-id="{{ encrypt_helper($auditor->id) }}">DELETE
                                                 </button>
                                             </div>
                                         </div>
@@ -133,7 +138,7 @@
                 confirmAction(url, '.verify-item', message);
             });
 
-            $('.unverify-item').on('click',  function(e) {
+            $('.unverify-item').on('click', function(e) {
                 e.preventDefault();
                 var itemId = $(this).attr('data-id');
                 var message = $(this).attr('data-message');
@@ -141,7 +146,7 @@
                 confirmAction(url, '.unverify-item', message);
             });
 
-            $('.delete-item').on('click',  function() {
+            $('.delete-item').on('click', function() {
                 var itemId = $(this).attr('data-id');
                 var url = '/auditors/' + itemId + '/delete'
                 confirmAction(url, '.delete-item');

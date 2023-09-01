@@ -39,7 +39,7 @@ class EmailVerificationJob implements ShouldQueue
         $subject = 'Verification Notification';
         $heading = 'Email Verification';
         $body = "Kindly click the link below to verify your email address.
-        <br/><br/><b><a href=".config('app.url')."/". encrypt($this->auditor->id) ."/email-verification >Click To Verify</a></b><br />
+        <br/><br/><b><a href=" . config('app.url') . "/" . encrypt_helper($this->auditor->id) . "/email-verification >Click To Verify</a></b><br />
         <br/><br/>Reach out to Ea-Auditor Support if you have any complaints or enquiries.
         <br/><br/>Thanks";
         Mail::to($this->auditor->email)->send(new SendMail($name, $subject, $heading, $body));

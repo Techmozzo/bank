@@ -33,6 +33,8 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::get('/setup', [SetupController::class, 'index'])->name('setup');
 
+Route::match(['get', 'post'], 'confirmation-requests/{id}/client-view', [ConfirmationRequestController::class, 'viewRequestByClient'])->name('client-view-request');
+
 Route::group(['middleware' => ['auth', 'block']], function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 });
@@ -69,5 +71,5 @@ Route::group(['middleware' => ['auth', 'admin', 'block']], function () {
 
 
 Route::get('/test', function(){
-    return view('signature.index');
+    return view('layouts.otp_validation');
 });

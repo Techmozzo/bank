@@ -57,7 +57,7 @@ class AuditorController extends Controller
     {
         $data = ['success' => 'Auditor deleted successfully'];
         try {
-            $auditor = Auditor::find(decrypt($id));
+            $auditor = Auditor::find(decrypt_helper($id));
             DB::beginTransaction();
             // more logic
             DB::commit();
@@ -76,7 +76,7 @@ class AuditorController extends Controller
     {
         $data = ['success' => 'Auditor blocked successfully'];
         try {
-            $auditor = Auditor::find(decrypt($id));
+            $auditor = Auditor::find(decrypt_helper($id));
             if ($auditor->is_blocked) {
                 $result = $auditor->update(['is_blocked' => 0]);
             } else {
@@ -102,7 +102,7 @@ class AuditorController extends Controller
     {
         $data = ['success' => 'Auditor has been verified.'];
         try {
-            $auditor = Auditor::with('profile')->where('id', decrypt($id))->first();
+            $auditor = Auditor::with('profile')->where('id', decrypt_helper($id))->first();
             if (!$auditor) {
                 return response()->json(['error' => 'Auditor not found.']);
             }

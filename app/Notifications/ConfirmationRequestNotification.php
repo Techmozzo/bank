@@ -59,11 +59,11 @@ class ConfirmationRequestNotification extends Notification
      */
     public function toArray($notifiable)
     {
-        // $link = env('APP_URL')."/app/engagements/".encrypt($this->data->invite->engagement->id)."/invites/".encrypt($this->data->invite->id);
-		// return [
-		// 	'link' => $link,
-		// 	'title' => 'Invite to' . $this->data->invite->engagement->name . ' Engagement',
-		// 	'type' => 'invitation',
-		// ];
+        // $link = env('APP_URL')."/app/engagements/".encrypt_helper($this->data->invite->engagement->id)."/invites/".encrypt_helper($this->data->invite->id);
+        // return [
+        // 	'link' => $link,
+        // 	'title' => 'Invite to' . $this->data->invite->engagement->name . ' Engagement',
+        // 	'type' => 'invitation',
+        // ];
     }
 }

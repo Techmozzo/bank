@@ -14,7 +14,7 @@
                     <div class="flex-grow-1"></div>
                     <div>
                         <a type="button" class="btn btn-opacity btn-primary btn-sm my-sm mr-sm"
-                            href="{{route('confirmation-requests.create')}}" title="Create Request">Create Request</a>
+                            href="{{ route('confirmation-requests.create') }}" title="Create Request">Create Request</a>
                     </div>
                 </div>
                 <div class="card">
@@ -37,7 +37,8 @@
                                     @foreach ($confirmation_requests as $request)
                                         <tr>
                                             <td>{{ $request->name }}</td>
-                                            <td>{{ getPeriodDayAndMonth($request->opening_period) .' '. getYearsRangeInStringFormat(getYearsInRange($request->opening_period, $request->closing_period))}}</td>
+                                            <td>{{ getPeriodDayAndMonth($request->opening_period) . ' ' . getYearsRangeInStringFormat(getYearsInRange($request->opening_period, $request->closing_period)) }}
+                                            </td>
                                             <td>{{ $request->auditor->name() }}</td>
                                             <td>
                                                 @if ($request->authorization_status == 0)
@@ -54,23 +55,25 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <a href="{{ url('/comfirmation-requests/'.encrypt($request->id).'/edit') }}"
+                                                <a href="{{ url('/comfirmation-requests/' . encrypt_helper($request->id) . '/edit') }}"
                                                     title="Edit request"><span class="material-icons">edit_note</span></a>
                                                 &nbsp;
                                                 @if ($request->is_verified)
-                                                    <a class="unverify-item text-warning" data-id="{{ encrypt($request->id) }}"
+                                                    <a class="unverify-item text-warning"
+                                                        data-id="{{ encrypt_helper($request->id) }}"
                                                         data-message="Yes, unverify it!" href="#"
                                                         title="Unverify request"><span
                                                             class="material-icons">unpublished</span></a>
                                                 @else
-                                                    <a class="verify-item text-success" data-id="{{ encrypt($request->id) }}"
+                                                    <a class="verify-item text-success"
+                                                        data-id="{{ encrypt_helper($request->id) }}"
                                                         data-message="Yes, verify it!" href="#"
                                                         title="Verify request"><span
                                                             class="material-icons">task_alt</span></a>
                                                 @endif
                                                 &nbsp;
                                                 <a class="delete-item text-danger"
-                                                    data-id="{{ encrypt($request->id) }}" href="#"
+                                                    data-id="{{ encrypt_helper($request->id) }}" href="#"
                                                     title="Delete request"><span class="material-icons">delete</span></a>
                                             </td>
                                         </tr>

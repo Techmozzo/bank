@@ -53,7 +53,7 @@
                     <div class="form-group">
                         <label class="control-label" for="email">Phone</label>
                         <input type="text" class="form-control @error('phone') is-invalid @enderror" id="phone"
-                            name="phone" value="{{old('name')}}" />
+                            name="phone" value="{{old('phone')}}" />
                         @error('phone')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>

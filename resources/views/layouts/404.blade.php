@@ -19,7 +19,7 @@
                 <i class="material-icons text-danger mr-md">error</i>
                 <div class="error-text">
                     <h1 class="error-title font-weight-bold">404</h1>
-                    <div class="error-subtitle">Page not found</div>
+                    <div class="error-subtitle"> {{ ($message) ? $message : "Page not found" }}</div>
                 </div>
             </div>
             <div class="error-action d-flex justify-content-around mt-xxl">

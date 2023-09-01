@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ConfirmationRequest as RequestsConfirmationRequest;
+use App\Http\Requests\ConfirmRequestTokenValidationRequest;
 use App\Jobs\ConfirmationRequestJob;
 use App\Models\Bank;
 use App\Models\ConfirmationRequest;
@@ -74,8 +75,9 @@ class ConfirmationRequestController extends Controller
                     'name' => $signatory,
                     'email' => $request->signatory_email[$key],
                     'phone' => $request->signatory_phone[$key],
+                    'token' => rand(100000, 999999)
                 ]);
-                // ConfirmationRequestJob::dispatch($auditor, $signatory);
+                ConfirmationRequestJob::dispatch($auditor, $signatory, $confirmation_request);
             }
 
             $file = Signature::generatePdf($confirmation_request);
@@ -133,5 +135,19 @@ class ConfirmationRequestController extends Controller
     public function destroy(ConfirmationRequest $confirmationRequest)
     {
         //
+    }
+
+    public function viewRequestByClient(ConfirmRequestTokenValidationRequest $request, $id)
+    {
+        $request_id = decrypt_helper($id);
+        $confirmation_request = ConfirmationRequest::find($request_id);
+        if (!$confirmation_request) {
+            return view('layouts.404')->with(['message' => 'Confirmation Request not found.']);
+        }
+        if($request->isMethod('POST')){
+
+        }
+        $action = route('client-view-request', $id);
+        return view('layouts.otp_validation', compact('action'));
     }
 }
