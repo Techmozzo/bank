@@ -10,6 +10,6 @@ class Signatory extends Model
     use HasFactory;
 
     protected $fillable = [
-       'name','email','phone','confirmation_request_id','status', 'token_expiry', 'token'
+       'name','email','phone','confirmation_request_id','status', 'expired_at', 'token'
     ];
 }

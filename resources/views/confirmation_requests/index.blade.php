@@ -55,22 +55,12 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <a href="{{ url('/comfirmation-requests/' . encrypt_helper($request->id) . '/edit') }}"
+                                                <a href="{{ url('/confirmation-requests/' . encrypt_helper($request->id) . '/edit') }}"
                                                     title="Edit request"><span class="material-icons">edit_note</span></a>
                                                 &nbsp;
-                                                @if ($request->is_verified)
-                                                    <a class="unverify-item text-warning"
-                                                        data-id="{{ encrypt_helper($request->id) }}"
-                                                        data-message="Yes, unverify it!" href="#"
-                                                        title="Unverify request"><span
-                                                            class="material-icons">unpublished</span></a>
-                                                @else
-                                                    <a class="verify-item text-success"
-                                                        data-id="{{ encrypt_helper($request->id) }}"
-                                                        data-message="Yes, verify it!" href="#"
-                                                        title="Verify request"><span
-                                                            class="material-icons">task_alt</span></a>
-                                                @endif
+                                                <a class="text-primary" href="{{route('confirmation-requests.show', encrypt_helper($request->id))}}"
+                                                    title="View request"><span
+                                                        class="material-icons">visibility</span></a>
                                                 &nbsp;
                                                 <a class="delete-item text-danger"
                                                     data-id="{{ encrypt_helper($request->id) }}" href="#"
@@ -99,22 +89,6 @@
     <script src="/dashboard/dist/assets/js/custom.js"></script>
     <script>
         $('document').ready(function() {
-            $('table').on('click', '.verify-item', function(e) {
-                e.preventDefault();
-                var itemId = $(this).attr('data-id');
-                var message = $(this).attr('data-message');
-                var url = '/comfirmation-requests/' + itemId + '/verification'
-                confirmAction(url, '.verify-item', message);
-            });
-
-            $('table').on('click', '.unverify-item', function(e) {
-                e.preventDefault();
-                var itemId = $(this).attr('data-id');
-                var message = $(this).attr('data-message');
-                var url = '/comfirmation-requests/' + itemId + '/verification'
-                confirmAction(url, '.unverify-item', message);
-            });
-
             $('table').on('click', '.delete-item', function(e) {
                 e.preventDefault();
                 var itemId = $(this).attr('data-id');

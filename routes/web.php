@@ -33,7 +33,8 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::get('/setup', [SetupController::class, 'index'])->name('setup');
 
-Route::match(['get', 'post'], 'confirmation-requests/{id}/client-view', [ConfirmationRequestController::class, 'viewRequestByClient'])->name('client-view-request');
+Route::match(['get', 'post'], 'confirmation-requests/{id}/signatories/{signatory}', [ConfirmationRequestController::class, 'viewRequest'])->name('request.view');
+Route::match(['get', 'post'], 'confirmation-requests/{id}/signatories/{signatory}/sign', [ConfirmationRequestController::class, 'signRequest'])->name('request.sign');
 
 Route::group(['middleware' => ['auth', 'block']], function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');

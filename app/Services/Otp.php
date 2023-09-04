@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Jobs\SendOtpViaEmailJob;
-use App\Models\Otp as OtpModel;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -13,29 +12,52 @@ use Symfony\Component\HttpFoundation\Response;
 
 class Otp
 {
-    private static function generateOTP()
+
+    protected $model, $recipient, $checker, $medium, $ttl;
+
+    private function __construct(string $model, object $recipient, array $checker, int $ttl = 10, string $medium = 'email')
+    {
+        $this->model = $model;
+        $this->recipient = $recipient;
+        $this->checker = $checker;
+        $this->ttl = $ttl;
+        $this->medium = $medium;
+    }
+
+    public static function send(string $model, object $recipient, array $checker, int $ttl = 10, string $medium = 'email')
+    {
+        return (new static($model, $recipient, $checker, $ttl, $medium))->build();
+    }
+
+    public function build()
+    {
+        return $this->sendOtp($this->recipient);
+    }
+
+    private function generateOTP()
     {
         $otp = random_int(100000, 999999);
-        $otp_exist = OtpModel::where([['code', $otp], ['expired_at', '>=', Carbon::now()->subMinutes(10)]])->first();
+        $otp_exist = $this->model::where([['token', $otp], ['expired_at', '>=', now()]])->first();
         if (!$otp_exist) {
             return $otp;
         } else {
-            self::generateOTP();
+            $this->generateOTP();
         }
     }
 
-    private static function getOtp($user_id)
+    private function getOtp()
     {
-        $otp = self::generateOTP();
-        OtpModel::updateOrCreate(['user_id' => $user_id], ['code' => $otp, 'expired_at' => now()]);
+        $otp = $this->generateOTP();
+        $this->model::updateOrCreate($this->checker, ['token' => $otp, 'expired_at' => now()->addMinutes($this->ttl)]);
         return $otp;
     }
 
-    public static function sendOtp($user){
-        try{
-            $otp = self::getOtp($user->id);
-            SendOtpViaEmailJob::dispatch($user, $otp);
-        }catch(Exception $e){
+    public function sendOtp($recipient)
+    {
+        try {
+            $otp = $this->getOtp();
+            SendOtpViaEmailJob::dispatch($recipient, $otp);
+        } catch (Exception $e) {
             Log::info(json_encode($e));
             throw new HttpResponseException(response()->error(Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage()));
         }

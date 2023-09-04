@@ -15,17 +15,17 @@ class VerificationJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $status, $user;
+    protected $status, $auditor;
     /**
      * Create a new job instance.
      *
      * @return void
      */
 
-    public function __construct($status, $user)
+    public function __construct($status, $auditor)
     {
         $this->status = $status;
-        $this->user = $user;
+        $this->auditor = $auditor;
     }
 
     /**
@@ -35,12 +35,12 @@ class VerificationJob implements ShouldQueue
      */
     public function handle()
     {
-        $name = $this->user->name();
+        $name = $this->auditor->name();
         $subject = 'Verification Notification';
         $heading = 'Account Verification';
         $body = 'This is to notify you that your account verification was ' . $this->status . '.
         <br/><br/>Reach out to Ea-Auditor Support if you have any complaints or enquiries.
         <br/><br/>Thanks';
-        Mail::to($this->user->email)->send(new SendMail($name, $subject, $heading, $body));
+        Mail::to($this->auditor->email)->send(new SendMail($name, $subject, $heading, $body));
     }
 }

@@ -15,16 +15,16 @@ class SendOtpViaEmailJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $user, $otp;
+    public $recipient, $otp;
 
     /**
      * ForgotPasswordJob constructor.
      * @param $user
      * @param $otp
      */
-    public function __construct($user, $otp)
+    public function __construct(object $recipient, string $otp)
     {
-        $this->user = $user;
+        $this->recipient = $recipient;
         $this->otp = $otp;
     }
 
@@ -38,7 +38,7 @@ class SendOtpViaEmailJob implements ShouldQueue
         $subject = 'Ea-Auditor';
         $heading = 'Ea-Auditor Authorization Token ';
         $body = $this->messageBody();
-        Mail::to($this->user->email)->send(new SendMail($this->user->name(), $subject, $heading, $body));
+        Mail::to($this->recipient->email)->send(new SendMail($this->recipient->name ?? $this->recipient->name(), $subject, $heading, $body));
     }
 
     private  function messageBody()

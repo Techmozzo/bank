@@ -7,7 +7,10 @@ use App\Http\Requests\ConfirmRequestTokenValidationRequest;
 use App\Jobs\ConfirmationRequestJob;
 use App\Models\Bank;
 use App\Models\ConfirmationRequest;
+use App\Models\Signatory;
+use App\Services\Otp;
 use App\Services\Signature;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -98,9 +101,15 @@ class ConfirmationRequestController extends Controller
      * @param  \App\Models\ConfirmationRequest  $confirmationRequest
      * @return \Illuminate\Http\Response
      */
-    public function show(ConfirmationRequest $confirmationRequest)
+    public function show($id)
     {
-        //
+        $confirmation_request = ConfirmationRequest::find(decrypt_helper($id));
+        if (!$confirmation_request) {
+            return view('layouts.404')->with(['message' => 'Confirmation Request not found.']);
+        }
+        $years = getYearsInStringFormat(getYearsInRange($confirmation_request->opening_period, $confirmation_request->closing_period));
+        $period = getPeriodDayAndMonth($confirmation_request->opening_period) . ' ' . $years;
+        return view('confirmation_requests.show.auditor', compact('confirmation_request', 'period'));
     }
 
     /**
@@ -137,17 +146,43 @@ class ConfirmationRequestController extends Controller
         //
     }
 
-    public function viewRequestByClient(ConfirmRequestTokenValidationRequest $request, $id)
+    public function viewRequest($id, $signatory_id)
     {
-        $request_id = decrypt_helper($id);
-        $confirmation_request = ConfirmationRequest::find($request_id);
+        $confirmation_request = ConfirmationRequest::find(decrypt_helper($id));
         if (!$confirmation_request) {
             return view('layouts.404')->with(['message' => 'Confirmation Request not found.']);
         }
-        if($request->isMethod('POST')){
-
+        $signatory = Signatory::find(decrypt_helper($signatory_id));
+        if (!$signatory) {
+            return view('layouts.404')->with(['message' => 'Signatory not found.']);
         }
-        $action = route('client-view-request', $id);
-        return view('layouts.otp_validation', compact('action'));
+        $years = getYearsInStringFormat(getYearsInRange($confirmation_request->opening_period, $confirmation_request->closing_period));
+        $period = getPeriodDayAndMonth($confirmation_request->opening_period) . ' ' . $years;
+        return view('confirmation_requests.show.client', compact('confirmation_request', 'period', 'signatory'));
+    }
+
+    public function signRequest(ConfirmRequestTokenValidationRequest $request, $id, $signatory_id)
+    {
+        $confirmation_request = ConfirmationRequest::find(decrypt_helper($id));
+        if (!$confirmation_request) {
+            return view('layouts.404')->with(['message' => 'Confirmation Request not found.']);
+        }
+        $signatory = Signatory::find(decrypt_helper($signatory_id));
+        if (!$signatory) {
+            return view('layouts.404')->with(['message' => 'Signatory not found.']);
+        }
+        if ($request->isMethod('POST')) {
+            if ($request->otp != $signatory->token) {
+                return redirect()->back()->with(['error' => 'Invalid Token.']);
+            } else {
+                if (now()->timestamp > Carbon::parse($signatory->expired_at)->timestamp) {
+                    Otp::send(Signatory::class, $signatory, ['email' => $signatory->email, 'confirmation_request_id' => $confirmation_request->id], 1440);
+                    return redirect()->back()->with(['success' => 'A new token has been sent to your email.']);
+                }
+                dd('Proceed to sign now');
+            }
+        }
+        $action = route('request.sign', ['id' => $id, 'signatory' => $signatory_id]);
+        return view('layouts.otp_validation', compact('confirmation_request', 'signatory', 'action'));
     }
 }

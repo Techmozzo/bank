@@ -103,7 +103,7 @@
                                     <p>Name and Designation</p>
                                 </td>
                                 <td >
-                                    <div class="input-group" style="padding-top: 20px;">
+                                    <div class="input-group" style="padding-top: 23px;">
                                         <input type="text" name="signature[]">
                                     </div>
                                     <p>Authorized signature</p>

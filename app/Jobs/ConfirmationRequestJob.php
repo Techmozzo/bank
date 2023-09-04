@@ -47,11 +47,17 @@ class ConfirmationRequestJob implements ShouldQueue
 
     private  function messageBody()
     {
+        $url = "http://127.0.0.1:8000/confirmation-requests/". encrypt_helper($this->confirmation_request->id) . "/signatories/". encrypt_helper($this->recipient->id);
         return "This is an audit confirmation request from " . $this->auditor->company->name . "
                     <br/><br/>Please click on the button below see request Details .
-                    <br/><br/><b><a href=" . config('app.url') . "/confirmation-requests/" . encrypt_helper($this->confirmation_request->id) . "/client-view" . ">View Request</a></b><br />
+                    <br/><br/><b><a href=".$url.">View Request</a></b><br />
+                    <br/><br/>Please use the OTP below to continue the process.
+                    <br/><br/><b>".$this->recipient->token."</b>
                     <br/><br/>If you did not request such action, no further action is required.
                     <br/><br/>Reach out to Ea-Auditor Support if you have any complaints or enquiries.
                     <br/><br/>Thanks";
     }
+
+    // <br/><br/><b><a href=" . config('app.url') . "/confirmation-requests/" . encrypt_helper($this->confirmation_request->id) . "/client-view" . ">View Request</a></b><br />
+
 }

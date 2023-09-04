@@ -7,11 +7,11 @@
         <div class="session-form-hold">
             <div class="card text-center">
                 <div class="card-body">
-                    @include('layouts.message')
                     <form method="POST" action={{$action}}>
                         @csrf
                         <i class="material-icons">lock</i>
-                        <p class="text-muted mb-xxl">Token Validation</p>
+                        <p class="text-muted mb-l">Token Validation</p>
+                        @include('layouts.message')
                         <div class="input-group  input-light mb-md">
                             <input id="otp" type="text" class="form-control @error('otp') is-invalid @enderror"
                                 name="otp" value="{{ old('otp') }}" required autocomplete="email" autofocus

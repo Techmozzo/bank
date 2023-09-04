@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AuditorRequest;
 use App\Interfaces\Types;
 use App\Jobs\AddAuditorJob;
+use App\Jobs\EmailVerificationJob;
 use App\Jobs\VerificationJob;
 use App\Models\Auditor;
 use App\Models\Profile;
@@ -29,12 +30,13 @@ class AuditorController extends Controller
         $admin = auth()->user();
         $password = Hash::make(Str::random(8));
         try {
-            DB::transaction();
+            DB::beginTransaction();
             $auditor = Auditor::create([
                 'email' => $request->email,
                 'password' => $password,
                 'role_id' => $request->role,
-                'company_id' => $admin->company_id
+                'company_id' => $admin->company_id,
+                'is_verified' => 1
             ]);
 
             Profile::create([
@@ -45,8 +47,9 @@ class AuditorController extends Controller
                 'user_id' => $auditor->id
             ]);
             AddAuditorJob::dispatch($admin, $auditor, $password);
-            VerificationJob::dispatch($auditor);
+            EmailVerificationJob::dispatch($auditor);
             DB::commit();
+            return redirect()->route('auditors.index')->with(['success' => 'Auditor Added Successfully']);
         } catch (Throwable $t) {
             DB::rollBack();
             return redirect()->route('auditors.create')->withInput()->with(['error' => 'Unable to Add Auditor at the moment']);
