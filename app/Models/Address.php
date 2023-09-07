@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Address extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $fillable = ['house_number', 'city', 'state', 'country', 'zip_code', 'user_id', 'user_type'];
+    protected $table = 'banker_addresses';
+    protected $fillable = ['house_number', 'city', 'state', 'country', 'zip_code', 'banker_id'];
 
 }

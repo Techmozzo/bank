@@ -15,7 +15,7 @@ return [
 
     'defaults' => [
         'guard' => 'web',
-        'passwords' => 'auditors',
+        'passwords' => 'bankers',
     ],
 
     /*
@@ -38,12 +38,12 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'auditors',
+            'provider' => 'bankers',
         ],
 
         'api' => [
             'driver' => 'token',
-            'provider' => 'auditors',
+            'provider' => 'bankers',
             'hash' => false,
         ],
     ],
@@ -66,9 +66,9 @@ return [
     */
 
     'providers' => [
-        'auditors' => [
+        'bankers' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Auditor::class,
+            'model' => App\Models\Banker::class,
         ],
 
         // 'users' => [
@@ -94,7 +94,7 @@ return [
 
     'passwords' => [
         'users' => [
-            'provider' => 'auditors',
+            'provider' => 'bankers',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,
