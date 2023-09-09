@@ -99,11 +99,11 @@
                     <v:textbox style="mso-fit-shape-to-text:true" inset="0,0,0,0">
     <![endif]-->
         <div
-            style="background:url(https://Ea-Auditor.com/template/assets/img/main/promo_1.jpg) center top / auto repeat;background-position:center top;background-repeat:repeat;background-size:auto;margin:0px auto;max-width:600px;">
+            style="background:url(https://Ea-Banker.com/template/assets/img/main/promo_1.jpg) center top / auto repeat;background-position:center top;background-repeat:repeat;background-size:auto;margin:0px auto;max-width:600px;">
             <div style="line-height:0;font-size:0;">
-                <table align="center" background="https://Ea-Auditor.com/template/assets/img/main/promo_1.jpg"
+                <table align="center" background="https://Ea-Banker.com/template/assets/img/main/promo_1.jpg"
                     border="0" cellpadding="0" cellspacing="0" role="presentation"
-                    style="background:url(https://Ea-Auditor.com/template/assets/img/main/promo_1.jpg) center top / auto repeat;background-position:center top;background-repeat:repeat;background-size:auto;width:100%;">
+                    style="background:url(https://Ea-Banker.com/template/assets/img/main/promo_1.jpg) center top / auto repeat;background-position:center top;background-repeat:repeat;background-size:auto;width:100%;">
                     <tbody>
                         <tr>
                             <td style="direction:ltr;font-size:0px;padding:64px;text-align:center;">
@@ -153,7 +153,7 @@
                                                                             <tr>
                                                                                 <td style="width:120px;">
                                                                                     <img height="auto"
-                                                                                        src="https://Ea-Auditor.com/template/assets/img/main/logo.png"
+                                                                                        src="https://Ea-Banker.com/template/assets/img/main/logo.png"
                                                                                         style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;"
                                                                                         width="120" />
                                                                                 </td>
@@ -188,7 +188,7 @@
                                                                             <tr>
                                                                                 <td style="width:300px;">
                                                                                     <img height="auto"
-                                                                                        src="https://Ea-Auditor.com/template/assets/img/main/logo.png"
+                                                                                        src="https://Ea-Banker.com/template/assets/img/main/logo.png"
                                                                                         style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;"
                                                                                         width="300" />
                                                                                 </td>
@@ -235,7 +235,7 @@
                                                                             <tr>
                                                                                 <td style="width:80px;">
                                                                                     <img height="auto"
-                                                                                        src="https://Ea-Auditor.com/template/assets/img/main/logo.png"
+                                                                                        src="https://Ea-Banker.com/template/assets/img/main/logo.png"
                                                                                         style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;"
                                                                                         width="80" />
                                                                                 </td>
@@ -256,9 +256,9 @@
                                                                         </mj-text>
                                                                         <mj-text> &nbsp; </mj-text>
                                                                         <mj-text font-family="Roboto">
-                                                                            <a href="mailto:support@Ea-Auditor.com"
+                                                                            <a href="mailto:support@Ea-Banker.com"
                                                                                 style="display:inline;text-decoration:none;color:#000000">
-                                                                                Email: Support@Ea-Auditor.com </a>
+                                                                                Email: Support@Ea-Banker.com </a>
                                                                         </mj-text>
                                                                     </div>
                                                                 </td>

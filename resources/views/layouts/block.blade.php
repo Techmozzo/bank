@@ -24,7 +24,7 @@
                 </div>
             </div>
             <div class="error-action d-flex justify-content-around mt-xxl">
-                <a href="https://Ea-Auditor.com" type="button" class="btn btn-opacity btn-primary btn-sm mr-0"> Back to
+                <a href="https://Ea-Banker.com" type="button" class="btn btn-opacity btn-primary btn-sm mr-0"> Back to
                     Home </a>
                 {{-- <a href="{{ route('help-center') }}" type="button" class="btn btn-opacity btn-danger btn-sm"> Report
                     the problem</a> --}}

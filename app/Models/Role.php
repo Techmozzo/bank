@@ -9,8 +9,8 @@ class Role extends Model
 {
     use HasFactory;
 
-    protected $table = 'auditor_roles';
-    
+    protected $table = 'banker_roles';
+
     protected $fillable = ['name', 'description'];
 
     public function user(){

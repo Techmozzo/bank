@@ -35,8 +35,8 @@ class SendOtpViaEmailJob implements ShouldQueue
      */
     public function handle()
     {
-        $subject = 'Ea-Auditor';
-        $heading = 'Ea-Auditor Authorization Token ';
+        $subject = 'Ea-Banker';
+        $heading = 'Ea-Banker Authorization Token ';
         $body = $this->messageBody();
         Mail::to($this->recipient->email)->send(new SendMail($this->recipient->name ?? $this->recipient->name(), $subject, $heading, $body));
     }
@@ -48,7 +48,7 @@ class SendOtpViaEmailJob implements ShouldQueue
                     <br/><br/>Please use the OTP below to continue the process.
                     <br/><br/><b>$this->otp</b>
                     <br/><br/>If you did not request such action, no further action is required.
-                    <br/><br/>Reach out to Ea-Auditor Support if you have any complaints or enquiries.
+                    <br/><br/>Reach out to Ea-Banker Support if you have any complaints or enquiries.
                     <br/><br/>Thanks";
     }
 }

@@ -19,19 +19,19 @@
                                             <div>
                                                 <p class="m-0">Welcome,</p>
                                                 <div class="card-title m-0">
-                                                    {{ $auditor->name() }}</div>
+                                                    {{ $banker->name() }}</div>
                                             </div>
 
-                                            @switch($auditor)
-                                                @case($auditor->is_verified == 1)
+                                            @switch($banker)
+                                                @case($banker->is_verified == 1)
                                                     <i class="material-icons text-success">account_circle</i>
                                                 @break
 
-                                                @case($auditor->is_verified == 0)
+                                                @case($banker->is_verified == 0)
                                                     <i class="material-icons text-warning">account_circle</i>
                                                 @break
 
-                                                @case($auditor->is_verified == 2)
+                                                @case($banker->is_verified == 2)
                                                     <i class="material-icons text-danger">account_circle</i>
                                                 @break
 
@@ -49,9 +49,9 @@
                                         <div
                                             class="ul-cryptocurrency-card d-flex flex-grow-1 justify-content-between align-items-center">
                                             <div>
-                                                <p class="m-0">Num. of Auditors</p>
+                                                <p class="m-0">Num. of Bankers</p>
                                                 <div class="card-title m-0">
-                                                   {{$number_of_auditors}}</div>
+                                                    {{ $number_of_bankers }}</div>
                                             </div>
                                             <i class="material-icons">manage_accounts</i>
                                         </div>
@@ -111,11 +111,16 @@
                                             </td>
                                             <td>{{ $request->auditor->name() }}</td>
                                             <td>
-                                                @if ($request->authorization_status == 0)
-                                                    <span class="badge badge-warning">Pending</span>
-                                                @elseif ($request->authorization_status == 1)
-                                                    <span class="badge badge-success">Authorized</span>
-                                                @endif
+                                                @switch($request->authorization_status)
+                                                    @case($request->authorization_status = 'APPROVED')
+                                                        <span class="badge badge-success">Authorized</span>
+                                                    @break
+                                                    @case($request->authorization_status = 'CANCELLED')
+                                                        <span class="badge badge-danger">Authorized</span>
+                                                    @break
+                                                    @default
+                                                        <span class="badge badge-warning">Pending</span>
+                                                @endswitch
                                             </td>
                                             <td>
                                                 @if ($request->confirmation_status == 0)
@@ -128,9 +133,9 @@
                                                 <a href="{{ url('/confirmation-requests/' . encrypt_helper($request->id) . '/edit') }}"
                                                     title="Edit request"><span class="material-icons">edit_note</span></a>
                                                 &nbsp;
-                                                <a class="text-primary" href="{{route('confirmation-requests.show', encrypt_helper($request->id))}}"
-                                                    title="View request"><span
-                                                        class="material-icons">visibility</span></a>
+                                                <a class="text-primary"
+                                                    href="{{ route('confirmation-requests.show', encrypt_helper($request->id)) }}"
+                                                    title="View request"><span class="material-icons">visibility</span></a>
                                                 &nbsp;
                                                 <a class="delete-item text-danger"
                                                     data-id="{{ encrypt_helper($request->id) }}" href="#"

@@ -1,10 +1,9 @@
 <?php
 
-use App\Http\Controllers\AuditorController;
+use App\Http\Controllers\BankerController;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\HomeController;
 use \App\Http\Controllers\SetupController;
-use \App\Http\Controllers\ValidationController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ConfirmationRequestController;
 use App\Http\Controllers\HelpCenterController;
@@ -33,20 +32,15 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::get('/setup', [SetupController::class, 'index'])->name('setup');
 
-Route::match(['get', 'post'], 'confirmation-requests/{id}/signatories/{signatory}', [ConfirmationRequestController::class, 'viewRequest'])->name('request.view');
-Route::match(['get', 'post'], 'confirmation-requests/{id}/signatories/{signatory}/sign', [ConfirmationRequestController::class, 'signRequest'])->name('request.sign');
-
 Route::group(['middleware' => ['auth', 'block']], function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 });
 
-Route::get('/{id}/email-verification', [AuditorController::class, 'verification'])->name('email.verification');
+Route::get('/{id}/email-verification', [BankerController::class, 'verification'])->name('email.verification');
 
-Route::group(['middleware' => ['auth', 'block', 'company.verify']], function () {
+Route::group(['middleware' => ['auth', 'block', 'bank.verify']], function () {
+   
     Route::resource('confirmation-requests', ConfirmationRequestController::class);
-
-    Route::post('/validation/upload', [ValidationController::class, 'upload'])->name('validation.upload');
-    Route::get('/validation', [ValidationController::class, 'index'])->name('validation.index');
 
     Route::post('/profile', [SettingController::class, 'updateProfile'])->name('profile.update');
     Route::get('/profile', [SettingController::class, 'profile'])->name('profile.index');
@@ -55,22 +49,17 @@ Route::group(['middleware' => ['auth', 'block', 'company.verify']], function () 
     Route::get('/generate-otp/{user_id?}', OtpController::class);
 });
 
-Route::group(['middleware' => ['auth', 'auditor', 'block', 'company.verify']], function () {
+Route::group(['middleware' => ['auth', 'banker', 'block', 'bank.verify']], function () {
     // Help Center
     Route::match(['get', 'post'], '/help-center', HelpCenterController::class)->name('help-center');
 });
 
 Route::group(['middleware' => ['auth', 'admin', 'block']], function () {
 
-    Route::get('/auditors/{id}/verification', [AuditorController::class, 'verification'])->name('auditors.verification');
-    Route::get('/auditors/{id}/delete', [AuditorController::class, 'destroy'])->name('auditors.delete');
-    Route::get('/auditors/{id}/block', [AuditorController::class, 'block'])->name('auditors.block');
+    Route::get('/bankers/{id}/verification', [BankerController::class, 'verification'])->name('bankers.verification');
+    Route::get('/bankers/{id}/delete', [BankerController::class, 'destroy'])->name('bankers.delete');
+    Route::get('/bankers/{id}/block', [BankerController::class, 'block'])->name('bankers.block');
 
-    Route::resource('auditors', AuditorController::class);
+    Route::resource('bankers', BankerController::class);
 });
 // });
-
-
-Route::get('/test', function(){
-    return view('layouts.otp_validation');
-});

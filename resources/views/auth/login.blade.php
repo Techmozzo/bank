@@ -72,7 +72,7 @@
                 <div class="border-bottom mt-xxl mb-lg"></div>
                 <div class="d-flex-column justify-content-center">
                     <div class="text-center">
-                        <p class="text-muted m-0">All rights reserved &copy; {{ \Carbon\Carbon::now()->year }} Ea-Auditor
+                        <p class="text-muted m-0">All rights reserved &copy; {{ \Carbon\Carbon::now()->year }} Ea-Banker
                             Bank
                         </p>
                     </div>

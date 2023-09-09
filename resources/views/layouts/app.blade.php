@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Ea-Auditor') }}</title>
+    <title>{{ config('app.name', 'Ea-Banker') }}</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -54,7 +54,7 @@
 
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="https://Ea-Auditor.com/register">{{ __('Register') }}</a>
+                                    <a class="nav-link" href="https://Ea-Banker.com/register">{{ __('Register') }}</a>
                                 </li>
                             @endif
                         @else

@@ -25,21 +25,20 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('admin', function ($auditor){
-            return $auditor->hasRole('admin');
+        Gate::define('admin', function ($banker) {
+            return $banker->hasRole('admin');
         });
 
-        Gate::define('auditor', function ($auditor){
-            return ($auditor->hasRole('user') && $auditor->verified == 1 ) ? true : false;
+        Gate::define('banker', function ($banker) {
+            return ($banker->hasRole('user') && $banker->verified == 1) ? true : false;
         });
 
-        Gate::define('isBlocked', function ($auditor){
-            return !$auditor->is_blocked ? true : false;
+        Gate::define('isBlocked', function ($banker) {
+            return !$banker->is_blocked ? true : false;
         });
 
-        Gate::define('is_company_verified', function($auditor){
-            return $auditor->company->is_verified ? true : false;
+        Gate::define('is_bank_verified', function ($banker) {
+            return $banker->bank->is_verified ? true : false;
         });
-
     }
 }

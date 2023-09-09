@@ -14,7 +14,7 @@
                     @endif
                     <form method="POST" action="{{ route('password.update') }}">
                         @csrf
-                        <a href="https://Ea-Auditor.com/">
+                        <a href="https://Ea-Banker.com/">
                             <img class="card-img-top signup mb-md" src="/dashboard/dist/assets/images/favicon1.png"
                                 alt="Card image cap">
                         </a>

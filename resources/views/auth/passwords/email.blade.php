@@ -14,7 +14,7 @@
                     @endif
                     <form method="POST" action="{{ route('password.email') }}">
                         @csrf
-                        <a href="https://Ea-Auditor.com/">
+                        <a href="https://Ea-Banker.com/">
                             <img class="card-img-top signup mb-md" src="/dashboard/dist/assets/images/favicon1.png"
                                 alt="Card image cap">
                         </a>
@@ -33,8 +33,8 @@
                         <button type="submit" class="btn btn-raised btn-raised-primary btn-block mb-md">Send Password
                             Reset Link</button>
                         <div class="d-flex justify-content-around">
-                            <a href="https://ibank.Ea-Auditor.com/login" class="">Sign In</a>
-                            <a href="https://Ea-Auditor.com/register">Create New Account</a>
+                            <a href="https://ibank.Ea-Banker.com/login" class="">Sign In</a>
+                            <a href="https://Ea-Banker.com/register">Create New Account</a>
                         </div>
                     </form>
                 </div>

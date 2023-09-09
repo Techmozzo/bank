@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Interfaces\Types;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -19,7 +18,7 @@ class Banker extends Authenticatable
      * @var array
      */
     protected $fillable = [
-         'email' , 'password', 'is_verified', 'is_blocked', 'bank_id', 'email_verified_at'
+         'email' , 'password', 'is_verified', 'is_blocked','role_id', 'must_change_password', 'bank_id', 'email_verified_at'
     ];
 
     /**
@@ -58,12 +57,20 @@ class Banker extends Authenticatable
         return $this->hasOne(Profile::class, 'banker_id');
     }
 
-    public function company(){
-        return $this->belongsTo(Company::class, 'company_id');
+    public function bank(){
+        return $this->belongsTo(Bank::class, 'bank_id');
     }
 
     public function confirmationRequest(){
-        return $this->hasMany(ConfirmationRequest::class, 'banker_id');
+        return $this->hasMany(ConfirmationRequest::class, 'bank_id');
+    }
+
+    public  function role(){
+        return $this->belongsTo(Role::class);
+    }
+
+    public function hasRole($role){
+        return null !== $this->role()->where('name', $role)->first();
     }
 
 }

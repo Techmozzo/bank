@@ -38,7 +38,7 @@ class EmailJob implements ShouldQueue
     {
         $name = ($this->to) ? 'Admin' : $this->user->name();
         $recipientEmail = ($this->to) ? $this->user->email : 'support@ea-audit.com';
-        $subject = 'Ea-Auditor';
+        $subject = 'Ea-Banker';
         $heading = $this->data['subject'];
         $body = $this->data['message'];
         $attachment = $this->data['attachment'] ?? null;

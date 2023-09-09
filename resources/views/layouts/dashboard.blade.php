@@ -98,8 +98,8 @@
                                                 class="material-icons nav-icon text-16">add_card</i>Confirmation
                                             Requests</a>
                                     </li>
-                                    <li><a href="{{ route('auditors.index') }}"><i
-                                                class="material-icons nav-icon text-16">manage_accounts</i>Auditors
+                                    <li><a href="{{ route('bankers.index') }}"><i
+                                                class="material-icons nav-icon text-16">manage_accounts</i>Bankers
                                             Management</a>
                                     </li>
                                 @endcan
@@ -121,7 +121,7 @@
         <div class="main-content-wrap">
             <!-- Start::Mobile header-->
             <div class="ul-mobile-top-header bg-slate">
-                <a href="https://Ea-Auditor.com/">
+                <a href="https://Ea-Banker.com/">
                     {{-- <img class="ul-brand-mobile" src="/dashboard/dist/assets/images/favicon2.png" alt="" /> --}}
                     <span class="app-logo-text ml-2 text-20 text-white">{{ config('app.name') }}</span>
                 </a>
@@ -247,8 +247,8 @@
                                 @endswitch
 
                                 @can('admin')
-                                    <a class="btn btn-opacity-primary btn-sm mr-2" href="{{ route('auditors.create') }}">Add
-                                        Auditor </a>
+                                    <a class="btn btn-opacity-primary btn-sm mr-2" href="{{ route('bankers.create') }}">Add
+                                        Banker </a>
                                 @endcan
                             </div>
                         </div>

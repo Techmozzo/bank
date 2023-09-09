@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Auditor;
+use App\Models\Banker;
 use App\Services\Otp;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -12,7 +12,7 @@ class OtpController extends Controller
     public function __invoke(?string $user_id = null)
     {
         if ($user_id) {
-            $user = Auditor::find($this->decrypt_helper($user_id));
+            $user = Banker::find($this->decrypt_helper($user_id));
         } else {
             $user = auth()->user();
         }

@@ -15,16 +15,16 @@ class EmailVerificationJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $auditor;
+    protected $banker;
     /**
      * Create a new job instance.
      *
      * @return void
      */
 
-    public function __construct($auditor)
+    public function __construct($banker)
     {
-        $this->auditor = $auditor;
+        $this->banker = $banker;
     }
 
 
@@ -35,13 +35,13 @@ class EmailVerificationJob implements ShouldQueue
      */
     public function handle()
     {
-        $name = $this->auditor->name();
+        $name = $this->banker->name();
         $subject = 'Verification Notification';
         $heading = 'Email Verification';
         $body = "Kindly click the link below to verify your email address.
-        <br/><br/><b><a href=" . config('app.url') . "/" . encrypt_helper($this->auditor->id) . "/email-verification >Click To Verify</a></b><br />
-        <br/><br/>Reach out to Ea-Auditor Support if you have any complaints or enquiries.
+        <br/><br/><b><a href=" . config('app.url') . "/" . encrypt_helper($this->banker->id) . "/email-verification >Click To Verify</a></b><br />
+        <br/><br/>Reach out to Ea-Banker Support if you have any complaints or enquiries.
         <br/><br/>Thanks";
-        Mail::to($this->auditor->email)->send(new SendMail($name, $subject, $heading, $body));
+        Mail::to($this->banker->email)->send(new SendMail($name, $subject, $heading, $body));
     }
 }

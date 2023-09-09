@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Mail\SendMail;
-use App\Models\Auditor;
+use App\Models\Banker;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -12,20 +12,20 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
 
-class AddAuditorJob implements ShouldQueue
+class AddBankerJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $admin, $auditor, $password;
+    protected $admin, $banker, $password;
 
     /**
      * UserInvitationJob constructor.
      * @param $data
      */
-    public function __construct(Auditor $admin, Auditor $auditor, string $password)
+    public function __construct(Banker $admin, Banker $banker, string $password)
     {
         $this->admin = $admin;
-        $this->auditor = $auditor;
+        $this->banker = $banker;
         $this->password = $password;
     }
 
@@ -36,14 +36,14 @@ class AddAuditorJob implements ShouldQueue
      */
     public function handle()
     {
-        $subject = $this->admin->company->name . ' Auditor Invite.';
-        $heading = 'Auditor Invite';
-        $body = $this->admin->company->name ." Has created a profile for you on Audit Confirmation Platform.
+        $subject = $this->admin->bank->name . ' Banker Invite.';
+        $heading = 'Banker Invite';
+        $body = $this->admin->bank->name . " Has created a profile for you on Audit Confirmation Platform.
             Here is a default password created for your login access
-            <br/> <strong>" . $this->password ."</strong>
-            <br/><br/><b><a href=".env('PP_URL').">Start Now</a></b><br />
+            <br/> <strong>" . $this->password . "</strong>
+            <br/><br/><b><a href=" . config('app.url') . ">Start Now</a></b><br />
             If the button doesn't work, copy and paste the URL in your browser's address bar: <br /> <br />
             <br/><br/>Reach out to Techmozzo Support if you have any complaints or enquiries. <br/><br/> Thanks.";
-        Mail::to($this->auditor->email)->send(new SendMail($this->auditor->name(), $subject, $heading, $body));
+        Mail::to($this->banker->email)->send(new SendMail($this->banker->name(), $subject, $heading, $body));
     }
 }

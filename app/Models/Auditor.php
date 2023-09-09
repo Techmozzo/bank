@@ -9,20 +9,15 @@ class Auditor extends Model
 {
     use HasFactory;
 
-    public function address(){
-        return $this->hasOne(Address::class, 'auditor_id');
+    public function name(){
+        return $this->profile->first_name.' '. $this->profile->last_name;
     }
 
     public function profile(){
-        return $this->hasOne(Profile::class, 'auditor_id');
+        return $this->hasOne(AuditorProfile::class, 'auditor_id');
     }
 
     public function company(){
         return $this->belongsTo(Company::class, 'company_id');
     }
-
-    public function confirmationRequest(){
-        return $this->hasMany(ConfirmationRequest::class, 'auditor_id');
-    }
-
 }

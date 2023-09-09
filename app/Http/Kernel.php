@@ -63,10 +63,10 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'admin' => \App\Http\Middleware\AdminMiddleware::class,
-        'auditor' => \App\Http\Middleware\Auditor::class,
+        'banker' => \App\Http\Middleware\Banker::class,
         'https' => \App\Http\Middleware\HttpsMiddleware::class,
         'block' => \App\Http\Middleware\BlockedMiddleware::class,
-        'company.verify' => \App\Http\Middleware\CompanyVerification::class,
+        'bank.verify' => \App\Http\Middleware\BankVerification::class,
 
     ];
 }

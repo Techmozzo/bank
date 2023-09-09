@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
-class CompanyVerification
+class BankVerification
 {
     /**
      * Handle an incoming request.
@@ -17,9 +17,9 @@ class CompanyVerification
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Gate::denies('is_company_verified')){
+        if(Gate::denies('is_bank_verified')){
             auth()->logout();
-            return redirect()->route('login')->with('error', 'Sorry you firm is not verified. Please contact customer service if there is any error in this notice. Thank you.');
+            return redirect()->route('login')->with('error', 'Sorry your bank is not verified. Please contact customer service if there is any error in this notice. Thank you.');
         }
         return $next($request);
     }

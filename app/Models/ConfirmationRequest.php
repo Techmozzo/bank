@@ -10,26 +10,31 @@ class ConfirmationRequest extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name','opening_period','closing_period','auditor_id','company_id','bank_id', 'authorization_status', 'confirmation_status', 'file'
+        'name', 'opening_period', 'closing_period', 'banker_id', 'company_id', 'bank_id', 'authorization_status', 'confirmation_status', 'file'
     ];
 
-    public function banker(){
+    public function banker()
+    {
         return $this->belongsTo(Banker::class, 'banker_id');
     }
 
-    public function auditor(){
+    public function auditor()
+    {
         return $this->belongsTo(Auditor::class, 'auditor_id');
     }
 
-    public function company(){
+    public function company()
+    {
         return $this->belongsTo(Company::class, 'company_id');
     }
 
-    public function signatory(){
+    public function signatory()
+    {
         return $this->hasMany(Signatory::class, 'confirmation_request_id');
     }
 
-    public function account(){
+    public function account()
+    {
         return $this->hasMany(Account::class, 'confirmation_request_id');
     }
 }

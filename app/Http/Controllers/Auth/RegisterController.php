@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Interfaces\Types;
-use App\Models\Auditor;
+use App\Models\Banker;
 use App\Models\Company;
 use App\Models\Role;
 use App\Providers\RouteServiceProvider;
@@ -59,7 +59,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:auditors,email'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:bankers,email'],
             'phone' => ['required', 'string', 'max:15'],
             'company_name' => ['required', 'string', 'max:255', 'unique:companies,name'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
@@ -84,24 +84,24 @@ class RegisterController extends Controller
                 'company_code' => 'EA-' . rand(100, 999) . rand(1000, 9999) . '-A'
             ]);
 
-            $auditor = Auditor::create([
+            $banker = Banker::create([
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
                 'role_id' => $role->id,
                 'company_id' => $company->id
             ]);
 
-            $company->update(['administrator_id' => $auditor->id]);
+            $company->update(['administrator_id' => $banker->id]);
 
-            $auditor->profile()->create([
+            $banker->profile()->create([
                 'first_name' => $data['first_name'],
                 'last_name' => $data['last_name'],
                 'phone' => $data['phone'],
-                'user_type' => Types::Users['auditor']
+                'user_type' => Types::Users['banker']
             ]);
 
             DB::commit();
-            return $auditor;
+            return $banker;
         } catch (Exception $e) {
             DB::rollBack();
         }

@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Ea-Auditor'),
+    'name' => env('APP_NAME', 'Ea-Banker'),
 
     /*
     |--------------------------------------------------------------------------
@@ -177,7 +177,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\ResponseMacroServiceProvider::class,
-
 
     ],
 

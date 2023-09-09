@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
-class Auditor
+class Banker
 {
     /**
      * Handle an incoming request.
@@ -17,7 +17,7 @@ class Auditor
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Gate::denies('auditor')){
+        if (Gate::denies('banker')) {
             return response()->view('layouts.401');
         }
         return $next($request);

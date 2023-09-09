@@ -37,7 +37,7 @@ class SendMail extends Mailable
      */
     public function build()
     {
-        $email = $this->from('support@ea-audit.com', 'Ea-Auditor')->subject($this->subject)->view('mail.template');
+        $email = $this->from('support@ea-audit.com', 'Ea-Banker')->subject($this->subject)->view('mail.template');
         if (isset($this->attachment)) {
             $mimeType = pathinfo($this->attachment, PATHINFO_EXTENSION);
             $email->attach(

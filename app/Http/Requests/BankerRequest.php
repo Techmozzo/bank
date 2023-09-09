@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ContactRequest extends FormRequest
+class BankerRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,11 @@ class ContactRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string',
-            'email'  => 'required|email',
-            'subject'  => 'required|string',
-            'message'  => 'required|string'
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:bankers,email'],
+            'phone' => ['required', 'string', 'max:15'],
+            'role' => ['required', 'string', 'exists:banker_roles,id']
         ];
     }
 }
