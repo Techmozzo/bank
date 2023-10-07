@@ -74,9 +74,6 @@ class BankerController extends Controller
             DB::rollBack();
             return response()->json(['error' => $e->getMessage()]);
         }
-        if (!$result) {
-            $data = ['error' => 'Unable to delete Banker'];
-        }
         return response()->json($data);
     }
 

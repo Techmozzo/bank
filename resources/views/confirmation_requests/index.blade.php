@@ -7,6 +7,7 @@
     <!-- Start:: content (Your custom content)-->
     <div class="container mt-lg">
         @include('layouts.message')
+        @include('layouts.validation_error')
         <div class="row">
             <div class="col-lg-12 mb-md">
                 <div class="card-header d-flex jusitify-space-between">
@@ -38,34 +39,49 @@
                                             <td>{{ $request->auditor->name() }}</td>
                                             <td>
                                                 @switch($request->authorization_status)
-                                                    @case($request->authorization_status = 'APPROVED')
-                                                        <span class="badge badge-success">Authorized</span>
+                                                    @case($request->authorization_status == 'APPROVED')
+                                                        <span class="badge badge-success">APPROVED</span>
                                                     @break
-                                                    @case($request->authorization_status = 'CANCELLED')
-                                                        <span class="badge badge-danger">Authorized</span>
+                                                    @case($request->authorization_status == 'CANCELLED')
+                                                        <span class="badge badge-danger">CANCELLED</span>
+                                                    @break
+                                                    @case($request->authorization_status == 'DECLINED')
+                                                        <span class="badge badge-danger">DECLINED</span>
                                                     @break
                                                     @default
-                                                        <span class="badge badge-warning">Pending</span>
+                                                        <span class="badge badge-warning">PENDING</span>
                                                 @endswitch
                                             </td>
                                             <td>
-                                                @if ($request->confirmation_status == 0)
-                                                    <span class="badge badge-warning">Pending</span>
-                                                @elseif ($request->confirmation_status == 1)
-                                                    <span class="badge badge-success">Completed</span>
-                                                @endif
+                                                @switch($request->confirmation_status)
+                                                    @case($request->confirmation_status == 'APPROVED')
+                                                        <span class="badge badge-success">APPROVED</span>
+                                                    @break
+                                                    @case($request->confirmation_status == 'CANCELLED')
+                                                        <span class="badge badge-danger">CANCELLED</span>
+                                                    @break
+                                                    @case($request->confirmation_status == 'DECLINED')
+                                                        <span class="badge badge-danger">DECLINED</span>
+                                                    @break
+                                                    @default
+                                                        <span class="badge badge-warning">PENDING</span>
+                                                @endswitch
                                             </td>
                                             <td>
-                                                <a href="{{ url('/confirmation-requests/' . encrypt_helper($request->id) . '/edit') }}"
-                                                    title="Edit request"><span class="material-icons">edit_note</span></a>
+                                                <a class="text-primary"
+                                                    href="{{ route('confirmation-requests.show', encrypt_helper($request->id)) }}"
+                                                    title="View request"><span class="material-icons">visibility</span></a>
                                                 &nbsp;
-                                                <a class="text-primary" href="{{route('confirmation-requests.show', encrypt_helper($request->id))}}"
-                                                    title="View request"><span
-                                                        class="material-icons">visibility</span></a>
-                                                &nbsp;
-                                                <a class="delete-item text-danger"
-                                                    data-id="{{ encrypt_helper($request->id) }}" href="#"
-                                                    title="Delete request"><span class="material-icons">delete</span></a>
+                                                @if($request->confirmation_status == 'PENDING')
+                                                    <a href="#" title="Approval Request" class="approval-request"
+                                                        data-id="{{ $request->id }}" data-name="{{ $request->name }}"><span
+                                                            class="material-icons">thumb_up_alt</span></a>
+                                                    &nbsp;
+                                                    <a class="delete-item text-danger decline-request" href="#"
+                                                        data-id="{{ $request->id }}" data-name="{{ $request->name }}"
+                                                        title="Decline request"><span
+                                                            class="material-icons">thumb_down_alt</span></a>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
@@ -81,6 +97,83 @@
         </div>
     </div>
     <!-- Start:: content (Your custom content)-->
+
+    {{-- File Upload Modal --}}
+    <div class="modal fade" id="approvalModal" tabindex="-1" role="dialog" aria-labelledby="approvalModal"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="approvalModal"></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex justify-content-center">
+                        <div class="col-md-10 offset-md-1 mb-sm mt-lg">
+                            <form method="POST" id="statement-form" action="{{ route('approve.request') }}"
+                                enctype="multipart/form-data">
+                                @csrf
+                                <!-- Form fields -->
+                                <div class="form-group">
+                                    <label for="statement">Upload Statement</label>
+                                    <input type="file" class="form-control @error('statement') is-invalid @enderror"
+                                        name="statement" required>
+                                    <div class="mt-xs"></div>
+                                    <textarea class="form-control" placeholder="Any Additional Information" cols="10"
+                                    rows="5" style="border: solid thin #EEE; border-radius: 5px;" name="comment" ></textarea>
+                                    <input type="hidden" class="form-control" name="confirmation_request" required />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" form="statement-form" class="btn btn-primary">Approve</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- File Upload Modal --}}
+    <div class="modal fade" id="declineModal" tabindex="-1" role="dialog" aria-labelledby="declineModal"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="declineModal"></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex justify-content-center">
+                        <div class="col-md-10 offset-md-1 mb-sm mt-lg">
+                            <form method="POST" id="decline-form" action="{{route('decline.request')}}">
+                                @csrf
+                                <!-- Form fields -->
+                                <div class="form-group">
+                                    <textarea class="form-control @error('comment') is-invalid @enderror" placeholder="State your reason" cols="10"
+                                        rows="5" style="border: solid thin #EEE; border-radius: 5px;" name="comment" required></textarea>
+                                    <input type="hidden" class="form-control" name="confirmation_request" required />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" form="decline-form" class="btn btn-primary">Decline</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 @endsection
 @section('script')
     <script src="/dashboard/dist/assets/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
@@ -90,12 +183,29 @@
     <script src="/dashboard/dist/assets/js/custom.js"></script>
     <script>
         $('document').ready(function() {
-            $('table').on('click', '.delete-item', function(e) {
+            $('body').on('click', '.table .approval-request', function(e) {
                 e.preventDefault();
-                var itemId = $(this).attr('data-id');
-                var url = '/comfirmation-requests/' + itemId + '/delete'
-                confirmAction(url, '.delete-item');
+                let request_id = $(this).data('id');
+                let company_name = $(this).data('name');
+                $('#approvalModal .modal-title').text('Approve ' + company_name + ' Confirmation Request');
+                $('#approvalModal input[name=confirmation_request]').val(request_id);
+                $('#approvalModal').modal('show');
             });
-        })
+
+            $('body').on('click', '.table .decline-request', function(e) {
+                e.preventDefault();
+                let request_id = $(this).data('id');
+                let company_name = $(this).data('name');
+                $('#declineModal .modal-title').text('State Reason Declining');
+                $('#declineModal input[name=confirmation_request]').val(request_id);
+                $('#declineModal').modal('show');
+            })
+
+            // $('#myModal').on('hidden.bs.modal', function() {
+            //     $(this).find('form')[0].reset();
+            //     $(this).find('.alert').remove();
+            //     // Add any additional reset actions you need
+            // });
+        });
     </script>
 @endsection

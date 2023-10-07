@@ -39,7 +39,9 @@ Route::group(['middleware' => ['auth', 'block']], function () {
 Route::get('/{id}/email-verification', [BankerController::class, 'verification'])->name('email.verification');
 
 Route::group(['middleware' => ['auth', 'block', 'bank.verify']], function () {
-   
+
+    Route::post('confirmation-requests/approve', [ConfirmationRequestController::class, 'approveRequest'])->name('approve.request');
+    Route::post('confirmation-requests/decline', [ConfirmationRequestController::class, 'declineRequest'])->name('decline.request');
     Route::resource('confirmation-requests', ConfirmationRequestController::class);
 
     Route::post('/profile', [SettingController::class, 'updateProfile'])->name('profile.update');
